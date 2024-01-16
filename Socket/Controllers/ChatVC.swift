@@ -48,6 +48,7 @@ class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
         messageTextField.delegate = self
         typingBubbleView = TypingBubbleView(frame: CGRect(x: 20, y:  tableView.frame.maxY + 0, width: 70, height: 32))
 //        typingBubbleView = TypingBubbleView(frame: CGRect(x: 20, y: 565, width: 70, height: 32))
+        print("Chat App")
         view.addSubview(typingBubbleView)
         self.typingBubbleView.stopAnimating()
         userNameLbl.text = messageSenderName
