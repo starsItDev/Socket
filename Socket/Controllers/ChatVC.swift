@@ -151,34 +151,22 @@ class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
         navigationController?.popViewController(animated: true)
     }
     @IBAction func imageBtn(_ sender: UIButton) {
-        let imagePicker = ImagePickerController()
-        imagePicker.settings.selection.max = 5 // Set the maximum number of images the user can select
-        imagePicker.albumButton.tintColor = .white
-        imagePicker.cancelButton.tintColor = .white
-        presentImagePicker(imagePicker, select: { (asset) in
-            // User selected an asset
-        }, deselect: { (asset) in
-            // User deselected an asset
-        }, cancel: { (assets) in
-            // User cancelled the selection
-        }, finish: { (assets) in
-            // User finished the selection
-            for asset in assets {
-                self.handleSelectedImage(asset: asset)
-            }
-        })
-    }
-    func handleSelectedImage(asset: PHAsset) {
-        // Fetch the selected image using the asset and perform any additional processing
-        let options = PHImageRequestOptions()
-        options.isSynchronous = true
-        options.deliveryMode = .highQualityFormat
-        PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: 300, height: 300), contentMode: .aspectFit, options: options, resultHandler: { (image, info) in
-            if let image = image {
-                // Assuming you have a function to send a single image
-                self.sendImageFunction(image: image)
-            }
-        })
+        let imagePickerAlert = UIAlertController(title: "Select Image Source", message: nil, preferredStyle: .actionSheet)
+        let galleryAction = UIAlertAction(title: "Choose from Gallery", style: .default) { _ in
+            self.showImagePicker(sourceType: .photoLibrary)
+        }
+        let cameraAction = UIAlertAction(title: "Take a Photo", style: .default) { _ in
+            self.showImagePicker(sourceType: .camera)
+        }
+        let bsImagePickerAction = UIAlertAction(title: "BSImagePicker", style: .default) { _ in
+            self.showBSImagePicker()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        imagePickerAlert.addAction(galleryAction)
+        imagePickerAlert.addAction(cameraAction)
+        imagePickerAlert.addAction(bsImagePickerAction)
+        imagePickerAlert.addAction(cancelAction)
+        present(imagePickerAlert, animated: true, completion: nil)
     }
     func sendImageFunction(image: UIImage) {
         let currentDate = Date()
@@ -190,26 +178,6 @@ class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
         tableView.reloadData()
         let indexPath = IndexPath(row: chatMessages.count - 1, section: 0)
         tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
-    }
-
-    @objc func imgBtnTapped(sender: UIButton) {
-        guard let index = sender.tag as? Int, index < chatMessages.count else {
-            return
-        }
-        let chatMessage = chatMessages[index]
-        if let image = chatMessage.image {
-            let imageInfo = GSImageInfo(image: image, imageMode: .aspectFit)
-            let transitionInfo = GSTransitionInfo(fromView: sender)
-
-            let imageViewer = GSImageViewerController(imageInfo: imageInfo, transitionInfo: transitionInfo)
-            imageViewer.dismissCompletion = {
-                // Optional: Add any completion logic after image viewer dismissal
-            }
-            present(imageViewer, animated: true, completion: nil)
-        } else {
-            print("Image is nil for the selected chat message.")
-            // Handle the case where the image is nil, perhaps show an alert or log a message.
-        }
     }
 }
 // MARK: - Extension Table View
@@ -239,6 +207,9 @@ extension ChatVC: UITableViewDataSource,UITableViewDelegate {
             imageCell.imageBtnTap.addTarget(self, action: #selector(imgBtnTapped(sender:)), for: .touchUpInside)
             // Set the tag to the index path row
             imageCell.imageBtnTap.tag = indexPath.row
+            imageCell.layer.borderWidth = 4
+            imageCell.layer.masksToBounds = true
+            imageCell.layer.borderColor = UIColor.white.cgColor
             cell = imageCell
         }
         else {
@@ -257,12 +228,81 @@ extension ChatVC: UITableViewDataSource,UITableViewDelegate {
         return cell
     }
 }
+// MARK: - Extension for Image Handling
 extension ChatVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+    // MARK: - Image Picker Methods
+    func showImagePicker(sourceType: UIImagePickerController.SourceType) {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = sourceType
+        if sourceType == .camera {
+            imagePicker.cameraCaptureMode = .photo
+        }
+        present(imagePicker, animated: true, completion: nil)
+    }
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        if let pickedImage = info[.originalImage] as? UIImage {
             // Assuming you have a function to send images
             sendImageFunction(image: pickedImage)
         }
-        dismiss(animated: true, completion: nil)
+        picker.dismiss(animated: true, completion: nil)
+    }
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+    // MARK: - BSImagePicker Methods
+    func showBSImagePicker() {
+        let imagePicker = ImagePickerController()
+        imagePicker.settings.selection.max = 5
+        imagePicker.settings.theme.selectionStyle = .numbered
+        imagePicker.settings.fetch.assets.supportedMediaTypes = [.image, .video]
+        imagePicker.settings.selection.unselectOnReachingMax = true
+        let start = Date()
+        self.presentImagePicker(imagePicker, select: { (asset) in
+            print("Selected: \(asset)")
+        }, deselect: { (asset) in
+            print("Deselected: \(asset)")
+        }, cancel: { (assets) in
+            print("Canceled with selections: \(assets)")
+        }, finish: { (assets) in
+            print("Finished with selections: \(assets)")
+            for asset in assets {
+                self.handleSelectedImage(asset: asset)
+            }
+        }, completion: {
+            let finish = Date()
+            print(finish.timeIntervalSince(start))
+        })
+    }
+    // MARK: - Image Handling Methods
+    func handleSelectedImage(asset: PHAsset) {
+        let options = PHImageRequestOptions()
+        options.isSynchronous = true
+        options.deliveryMode = .highQualityFormat
+        PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: 300, height: 300), contentMode: .aspectFit, options: options, resultHandler: { (image, info) in
+            if let image = image {
+                // Assuming you have a function to send a single image
+                self.sendImageFunction(image: image)
+            }
+        })
+    }
+    // MARK: - Image Button Tap
+    @objc func imgBtnTapped(sender: UIButton) {
+        guard let index = sender.tag as? Int, index < chatMessages.count else {
+            return
+        }
+        let chatMessage = chatMessages[index]
+        if let image = chatMessage.image {
+            let imageInfo = GSImageInfo(image: image, imageMode: .aspectFit)
+            let transitionInfo = GSTransitionInfo(fromView: sender)
+            let imageViewer = GSImageViewerController(imageInfo: imageInfo, transitionInfo: transitionInfo)
+            imageViewer.dismissCompletion = {
+                // Optional: Add any completion logic after image viewer dismissal
+            }
+            present(imageViewer, animated: true, completion: nil)
+        } else {
+            print("Image is nil for the selected chat message.")
+            // Handle the case where the image is nil, perhaps show an alert or log a message.
+        }
     }
 }

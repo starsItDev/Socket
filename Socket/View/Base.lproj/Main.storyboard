@@ -594,6 +594,15 @@
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Zas-x8-31A">
                                 <rect key="frame" x="20" y="801.33333333333337" width="353" height="35.666666666666629"/>
                                 <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y9X-6W-sPA">
+                                        <rect key="frame" x="0.0" y="0.0" width="35" height="35.666666666666664"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="35" id="mfp-xl-XWC"/>
+                                        </constraints>
+                                        <color key="tintColor" red="0.60217845680000004" green="0.1126591689" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="camera.viewfinder" catalog="system" title=" "/>
+                                    </button>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Write a Message " textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NxO-ob-Lrr">
                                         <rect key="frame" x="0.0" y="0.0" width="238" height="35.666666666666664"/>
                                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -633,6 +642,11 @@
                                         </connections>
                                     </button>
                                 </subviews>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="y9X-6W-sPA"/>
+                                    </mask>
+                                </variation>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zY8-iO-dgW">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="140"/>
@@ -829,6 +843,7 @@
     </scenes>
     <resources>
         <image name="camera.on.rectangle.fill" catalog="system" width="128" height="98"/>
+        <image name="camera.viewfinder" catalog="system" width="128" height="115"/>
         <image name="chevron.backward" catalog="system" width="97" height="128"/>
         <image name="d-avatar" width="400" height="400"/>
         <systemColor name="systemBackgroundColor">
