@@ -4,29 +4,8 @@
 //  Created by StarsDev on 26/12/2023.
 import Foundation
 import UIKit
-
-enum MessageType {
-    case text
-    case image
-}
-
-class ChatMessage {
-    var message: String
-    var time: String
-    var senderId: String
-    var messageType: MessageType
-    var image: UIImage? // Add this property for image messages
-
-    init(message: String, time: String, senderId: String, messageType: MessageType = .text, image: UIImage? = nil) {
-        self.message = message
-        self.time = time
-        self.senderId = senderId
-        self.messageType = messageType
-        self.image = image
-    }
-}
-
-
+import BSImagePicker
+import Photos
 class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
     // MARK: - IBOutlet Properties
     @IBOutlet private weak var messageTextField: UITextField!
@@ -44,6 +23,7 @@ class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
     // MARK: - OverRide Func
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.delegate = self
         socketManager.delegate = self
         messageTextField.delegate = self
         typingBubbleView = TypingBubbleView(frame: CGRect(x: 20, y:  tableView.frame.maxY + 0, width: 70, height: 32))
@@ -171,27 +151,69 @@ class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
         navigationController?.popViewController(animated: true)
     }
     @IBAction func imageBtn(_ sender: UIButton) {
-        let imagePicker = UIImagePickerController()
-           imagePicker.delegate = self
-           present(imagePicker, animated: true, completion: nil)
+        let imagePicker = ImagePickerController()
+        imagePicker.settings.selection.max = 5 // Set the maximum number of images the user can select
+        imagePicker.albumButton.tintColor = .white
+        imagePicker.cancelButton.tintColor = .white
+        presentImagePicker(imagePicker, select: { (asset) in
+            // User selected an asset
+        }, deselect: { (asset) in
+            // User deselected an asset
+        }, cancel: { (assets) in
+            // User cancelled the selection
+        }, finish: { (assets) in
+            // User finished the selection
+            for asset in assets {
+                self.handleSelectedImage(asset: asset)
+            }
+        })
+    }
+    func handleSelectedImage(asset: PHAsset) {
+        // Fetch the selected image using the asset and perform any additional processing
+        let options = PHImageRequestOptions()
+        options.isSynchronous = true
+        options.deliveryMode = .highQualityFormat
+        PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: 300, height: 300), contentMode: .aspectFit, options: options, resultHandler: { (image, info) in
+            if let image = image {
+                // Assuming you have a function to send a single image
+                self.sendImageFunction(image: image)
+            }
+        })
     }
     func sendImageFunction(image: UIImage) {
         let currentDate = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "h:mm a"
         let currentTimeString = dateFormatter.string(from: currentDate)
-
         let chatMessage = ChatMessage(message: "", time: currentTimeString, senderId: accessToken, messageType: .image, image: image)
         chatMessages.append(chatMessage)
-
         tableView.reloadData()
         let indexPath = IndexPath(row: chatMessages.count - 1, section: 0)
         tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
     }
 
+    @objc func imgBtnTapped(sender: UIButton) {
+        guard let index = sender.tag as? Int, index < chatMessages.count else {
+            return
+        }
+        let chatMessage = chatMessages[index]
+        if let image = chatMessage.image {
+            let imageInfo = GSImageInfo(image: image, imageMode: .aspectFit)
+            let transitionInfo = GSTransitionInfo(fromView: sender)
+
+            let imageViewer = GSImageViewerController(imageInfo: imageInfo, transitionInfo: transitionInfo)
+            imageViewer.dismissCompletion = {
+                // Optional: Add any completion logic after image viewer dismissal
+            }
+            present(imageViewer, animated: true, completion: nil)
+        } else {
+            print("Image is nil for the selected chat message.")
+            // Handle the case where the image is nil, perhaps show an alert or log a message.
+        }
+    }
 }
 // MARK: - Extension Table View
-extension ChatVC: UITableViewDataSource {
+extension ChatVC: UITableViewDataSource,UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return chatMessages.count
     }
@@ -213,8 +235,10 @@ extension ChatVC: UITableViewDataSource {
             cell = senderCell
         }else if chatMessage.messageType == .image {
             let imageCell = tableView.dequeueReusableCell(withIdentifier: "ImageCellTV", for: indexPath) as! ImageCellTV
-            // Assuming your ChatMessage model has an image property
             imageCell.imgView.image = chatMessage.image
+            imageCell.imageBtnTap.addTarget(self, action: #selector(imgBtnTapped(sender:)), for: .touchUpInside)
+            // Set the tag to the index path row
+            imageCell.imageBtnTap.tag = indexPath.row
             cell = imageCell
         }
         else {
@@ -239,7 +263,6 @@ extension ChatVC: UIImagePickerControllerDelegate, UINavigationControllerDelegat
             // Assuming you have a function to send images
             sendImageFunction(image: pickedImage)
         }
-
         dismiss(animated: true, completion: nil)
     }
 }

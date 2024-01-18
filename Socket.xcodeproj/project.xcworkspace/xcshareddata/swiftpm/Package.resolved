@@ -1,6 +1,24 @@
 {
   "pins" : [
     {
+      "identity" : "bsimagepicker",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mikaoj/BSImagePicker.git",
+      "state" : {
+        "revision" : "750f26abd0fafbcc4124adef436251888a7c962a",
+        "version" : "3.3.1"
+      }
+    },
+    {
+      "identity" : "gsimageviewercontroller",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/wxxsw/GSImageViewerController.git",
+      "state" : {
+        "revision" : "2e32b3aec1e4bf0c87b096ae9a9ca41df026028a",
+        "version" : "1.6.3"
+      }
+    },
+    {
       "identity" : "inputbaraccessoryview",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/nathantannar4/InputBarAccessoryView",

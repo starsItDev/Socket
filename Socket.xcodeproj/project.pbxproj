@@ -20,6 +20,9 @@
 		7665C5A32B4FD23E00E8CF09 /* RaoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7665C5A22B4FD23E00E8CF09 /* RaoVC.swift */; };
 		7665C5A62B51620F00E8CF09 /* Message Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7665C5A52B51620F00E8CF09 /* Message Model.swift */; };
 		768D4FAD2B3AAFB500BBCBE4 /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768D4FAC2B3AAFB500BBCBE4 /* SocketManager.swift */; };
+		769AA46B2B57B228008A540C /* GSImageViewerController in Frameworks */ = {isa = PBXBuildFile; productRef = 769AA46A2B57B228008A540C /* GSImageViewerController */; };
+		769AA46D2B57E7E7008A540C /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769AA46C2B57E7E7008A540C /* ImageHelper.swift */; };
+		769AA4702B580633008A540C /* BSImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 769AA46F2B580633008A540C /* BSImagePicker */; };
 		769C1A512B54FC0F003016B4 /* MessageKit in Frameworks */ = {isa = PBXBuildFile; productRef = 769C1A502B54FC0F003016B4 /* MessageKit */; };
 		769C1A542B54FC2C003016B4 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 769C1A532B54FC2C003016B4 /* IQKeyboardManagerSwift */; };
 		769C1A572B54FC46003016B4 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 769C1A562B54FC46003016B4 /* SocketIO */; };
@@ -46,6 +49,7 @@
 		7665C5A22B4FD23E00E8CF09 /* RaoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaoVC.swift; sourceTree = "<group>"; };
 		7665C5A52B51620F00E8CF09 /* Message Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message Model.swift"; sourceTree = "<group>"; };
 		768D4FAC2B3AAFB500BBCBE4 /* SocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketManager.swift; sourceTree = "<group>"; };
+		769AA46C2B57E7E7008A540C /* ImageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
 		769D317B2B566BB5007AEC2F /* ImageCellTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCellTV.swift; sourceTree = "<group>"; };
 		76AAA5A02B44264300E8893B /* MessageCell2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell2.swift; sourceTree = "<group>"; };
 		76B7E4CE2B46BA4000E27656 /* DecryptionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptionHandler.swift; sourceTree = "<group>"; };
@@ -60,6 +64,8 @@
 			files = (
 				769C1A512B54FC0F003016B4 /* MessageKit in Frameworks */,
 				769C1A542B54FC2C003016B4 /* IQKeyboardManagerSwift in Frameworks */,
+				769AA46B2B57B228008A540C /* GSImageViewerController in Frameworks */,
+				769AA4702B580633008A540C /* BSImagePicker in Frameworks */,
 				769C1A572B54FC46003016B4 /* SocketIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -141,6 +147,7 @@
 			children = (
 				7665C59D2B4FD1EE00E8CF09 /* UserVC */,
 				74C8980C2B35F6EE00FCA29B /* ChatVC.swift */,
+				769AA46C2B57E7E7008A540C /* ImageHelper.swift */,
 				76C105962B47DAF5006D9923 /* MessageKitVC.swift */,
 				76C85EDE2B3B0F3E007B68E5 /* TableViewCell */,
 			);
@@ -185,6 +192,8 @@
 				769C1A502B54FC0F003016B4 /* MessageKit */,
 				769C1A532B54FC2C003016B4 /* IQKeyboardManagerSwift */,
 				769C1A562B54FC46003016B4 /* SocketIO */,
+				769AA46A2B57B228008A540C /* GSImageViewerController */,
+				769AA46F2B580633008A540C /* BSImagePicker */,
 			);
 			productName = Socket;
 			productReference = 74C897F52B35F5D800FCA29B /* Socket.app */;
@@ -218,6 +227,8 @@
 				769C1A4F2B54FC0F003016B4 /* XCRemoteSwiftPackageReference "MessageKit" */,
 				769C1A522B54FC2C003016B4 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 				769C1A552B54FC46003016B4 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */,
+				769AA4692B57B228008A540C /* XCRemoteSwiftPackageReference "GSImageViewerController" */,
+				769AA46E2B580633008A540C /* XCRemoteSwiftPackageReference "BSImagePicker" */,
 			);
 			productRefGroup = 74C897F62B35F5D800FCA29B /* Products */;
 			projectDirPath = "";
@@ -261,6 +272,7 @@
 				76B7E4CF2B46BA4000E27656 /* DecryptionHandler.swift in Sources */,
 				769D317C2B566BB5007AEC2F /* ImageCellTV.swift in Sources */,
 				74C897FB2B35F5D800FCA29B /* SceneDelegate.swift in Sources */,
+				769AA46D2B57E7E7008A540C /* ImageHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,6 +494,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		769AA4692B57B228008A540C /* XCRemoteSwiftPackageReference "GSImageViewerController" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/wxxsw/GSImageViewerController.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		769AA46E2B580633008A540C /* XCRemoteSwiftPackageReference "BSImagePicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mikaoj/BSImagePicker.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 		769C1A4F2B54FC0F003016B4 /* XCRemoteSwiftPackageReference "MessageKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/MessageKit/MessageKit";
@@ -509,6 +537,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		769AA46A2B57B228008A540C /* GSImageViewerController */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 769AA4692B57B228008A540C /* XCRemoteSwiftPackageReference "GSImageViewerController" */;
+			productName = GSImageViewerController;
+		};
+		769AA46F2B580633008A540C /* BSImagePicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 769AA46E2B580633008A540C /* XCRemoteSwiftPackageReference "BSImagePicker" */;
+			productName = BSImagePicker;
+		};
 		769C1A502B54FC0F003016B4 /* MessageKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 769C1A4F2B54FC0F003016B4 /* XCRemoteSwiftPackageReference "MessageKit" */;

@@ -10,6 +10,10 @@ import UIKit
 class ImageCellTV: UITableViewCell {
 
     @IBOutlet weak var imgView: UIImageView!
+    
+    @IBOutlet weak var imageBtnTap: UIButton!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
