@@ -602,6 +602,9 @@
                                         <color key="tintColor" red="0.60217845680000004" green="0.1126591689" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" image="camera.viewfinder" catalog="system" title=" "/>
+                                        <connections>
+                                            <action selector="fileBtn:" destination="8sV-QQ-qEg" eventType="touchUpInside" id="OVn-qj-Fag"/>
+                                        </connections>
                                     </button>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Write a Message " textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NxO-ob-Lrr">
                                         <rect key="frame" x="0.0" y="0.0" width="238" height="35.666666666666664"/>

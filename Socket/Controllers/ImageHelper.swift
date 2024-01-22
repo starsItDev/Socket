@@ -7,6 +7,58 @@
 
 import Foundation
 import UIKit
+//@IBAction func imageBtn(_ sender: UIButton) {
+//    let imagePickerAlert = UIAlertController(title: "Select Image Source", message: nil, preferredStyle: .actionSheet)
+//    let galleryAction = UIAlertAction(title: "Choose from Gallery", style: .default) { _ in
+//        self.showImagePicker(sourceType: .photoLibrary)
+//    }
+//    let cameraAction = UIAlertAction(title: "Take a Photo", style: .default) { _ in
+//        self.showImagePicker(sourceType: .camera)
+//    }
+//    //        let bsImagePickerAction = UIAlertAction(title: "BSImagePicker", style: .default) { _ in
+//    //            self.showBSImagePicker()
+//    //        }
+//    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+//    imagePickerAlert.addAction(galleryAction)
+//    imagePickerAlert.addAction(cameraAction)
+//    //        imagePickerAlert.addAction(bsImagePickerAction)
+//    imagePickerAlert.addAction(cancelAction)
+//    if let popoverController = imagePickerAlert.popoverPresentationController {
+//        popoverController.sourceView = sender
+//        popoverController.sourceRect = sender.bounds
+//        popoverController.permittedArrowDirections = .any
+//    }
+//    present(imagePickerAlert, animated: true, completion: nil)
+//}
+// MARK: - BSImagePicker Methods
+//    func showBSImagePicker() {
+//        let imagePicker = ImagePickerController()
+//        imagePicker.settings.selection.max = 5
+//        imagePicker.settings.theme.selectionStyle = .numbered
+//        imagePicker.settings.fetch.assets.supportedMediaTypes = [.image, .video]
+//        imagePicker.settings.selection.unselectOnReachingMax = true
+//        let start = Date()
+//        self.presentImagePicker(imagePicker, select: { (asset) in
+//            print("Selected: \(asset)")
+//        }, deselect: { (asset) in
+//            print("Deselected: \(asset)")
+//        }, cancel: { (assets) in
+//            print("Canceled with selections: \(assets)")
+//        }, finish: { (assets) in
+//            print("Finished with selections: \(assets)")
+//            for asset in assets {
+//                self.handleSelectedImage(asset: asset)
+//            }
+//        }, completion: {
+//            let finish = Date()
+//            print(finish.timeIntervalSince(start))
+//        })
+//    }
+
+
+
+
+
 
 public struct GSImageInfo {
     

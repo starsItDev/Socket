@@ -75,7 +75,10 @@ class SocketIOManager: NSObject {
             let receiverID = data["receiver"] as? Int,
             let senderID = data["sender"] as? Int,
             let key = data["time"] as? Int,
-            let time = data["time_html"] as? String {
+            let time = data["time_html"] as? String,
+            let isMedia = data["isMedia"] as? Bool,
+            let isRecord = data["isRecord"] as? Bool,
+            let mediaLink = data["mediaLink"] as? String{
             // Decrypt the message using the decryption function
             if let decryptedMessage = DecryptionHandler.decryptionAESModeECB(messageData: encryptedMessage, key: "\(key)-00000") {
                 print("Received private message from \(avatar): \(time)")
@@ -125,6 +128,38 @@ class SocketIOManager: NSObject {
             "color": color,
             "isSticker": isSticker,
             "message_reply_id": messageReplyID
+        ]
+        socket.emitWithAck("private_message", messageData).timingOut(after: 0) { ackData in
+            if let ackDataDict = ackData.first as? [String: Any], ackDataDict["status"] as? Int == 200 {
+                // Message sent successfully
+                print("Private Message Sent Successfully!")
+                completion(true)
+            } else {
+                // Message sending failed
+                print("Failed to send private message.")
+                completion(false)
+            }
+        }
+    }
+    func sendPrivateMessage(withMedia toID: String, fromID: String, username: String, message: String, color: String, isSticker: Bool, messageReplyID: String, media: String, mediaFileName: String, mediaFileSize: Int, duration: Int, completion: @escaping (Bool) -> Void) {
+        guard isSocketConnected else {
+            print("Socket Status: \(self.socket.status)")
+            print("Socket is not connected. Unable to emit 'private_message' event.")
+            completion(false)
+            return
+        }
+        let messageData: [String: Any] = [
+            "to_id": toID,
+            "from_id": fromID,
+            "username": username,
+            "msg": message,
+            "color": color,
+            "isSticker": isSticker,
+            "message_reply_id": messageReplyID,
+            "media": media,
+            "mediaFileName": mediaFileName,
+            "mediaFileSize": mediaFileSize,
+            "duration": duration
         ]
         socket.emitWithAck("private_message", messageData).timingOut(after: 0) { ackData in
             if let ackDataDict = ackData.first as? [String: Any], ackDataDict["status"] as? Int == 200 {
