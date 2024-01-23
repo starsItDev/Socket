@@ -4,9 +4,10 @@ import SocketIO
 import CryptoKit
 
 protocol SocketIOManagerDelegate: AnyObject {
-    func addMessage(_ message: String, senderID: Int, receiverID: Int,time: String)
+    func addMessage(_ message: String, senderID: Int, receiverID: Int,time: String, mediaLink : String)
     func handleTypingEvent()
     func handleTypingDoneEvent()
+    func addImages(_ imges:String)
 }
 class SocketIOManager: NSObject {
     static let sharedInstance = SocketIOManager()
@@ -82,7 +83,8 @@ class SocketIOManager: NSObject {
             // Decrypt the message using the decryption function
             if let decryptedMessage = DecryptionHandler.decryptionAESModeECB(messageData: encryptedMessage, key: "\(key)-00000") {
                 print("Received private message from \(avatar): \(time)")
-                delegate?.addMessage(decryptedMessage, senderID: senderID, receiverID: receiverID, time: time)
+                delegate?.addMessage(decryptedMessage, senderID: senderID, receiverID: receiverID, time: time, mediaLink:mediaLink)
+                delegate?.addImages(mediaLink)
 //                delegate?.addMessage("\(username): " + decryptedMessage, senderID: senderID, receiverID: receiverID, time: time)
             } else {
                 print("Failed to decrypt message from \(username)")

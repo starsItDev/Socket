@@ -26,8 +26,8 @@ class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
         tableView.delegate = self
         socketManager.delegate = self
         messageTextField.delegate = self
-        typingBubbleView = TypingBubbleView(frame: CGRect(x: 20, y:  tableView.frame.maxY + 0, width: 70, height: 32))
-        //        typingBubbleView = TypingBubbleView(frame: CGRect(x: 20, y: 565, width: 70, height: 32))
+//        typingBubbleView = TypingBubbleView(frame: CGRect(x: 20, y:  tableView.frame.maxY + 0, width: 70, height: 32))
+                typingBubbleView = TypingBubbleView(frame: CGRect(x: 20, y: 565, width: 70, height: 32))
         view.addSubview(typingBubbleView)
         self.typingBubbleView.stopAnimating()
         userNameLbl.text = messageSenderName
@@ -110,9 +110,6 @@ class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
         let color = "#056bba"
         let isSticker = false
         let messageReplyID = ""
-//        let media = "https://untamed-vod-v1-source71e471f1-o72av4ghlldb.s3.amazonaws.com/"
-//        print(media)
-//        let mediaFileName = "27-1024x683.jpg"
         let media = "https://untamed-vod-v1-source71e471f1-o72av4ghlldb.s3.amazonaws.com/\(filename)"
             
             let mediaFileName = filename
@@ -187,7 +184,22 @@ class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
             return nil
         }
     }
-    func addMessage(_ message: String, senderID: Int, receiverID: Int, time: String) {
+    func addImages(_ images: String) {
+        print(images)
+        loadImage(from: images) { (image) in
+            if let image = image {
+                let chatMessage = ChatMessage(message: "", time: "", senderId: "", messageType: .image, image: image)
+                self.chatMessages.append(chatMessage)
+
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                    let indexPath = IndexPath(row: self.chatMessages.count - 1, section: 0)
+                    self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+                }
+            }
+        }
+    }
+    func addMessage(_ message: String, senderID: Int, receiverID: Int, time: String, mediaLink: String) {
         print(senderID)
         print(time)
         if let formattedTime = formatHTMLTime(htmlTime: time) {
@@ -204,6 +216,20 @@ class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
             self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         }
     }
+    func loadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
+        guard let imageUrl = URL(string: urlString) else {
+            completion(nil)
+            return
+        }
+        URLSession.shared.dataTask(with: imageUrl) { (data, response, error) in
+            if let data = data, let image = UIImage(data: data) {
+                completion(image)
+            } else {
+                completion(nil)
+            }
+        }.resume()
+    }
+
     // MARK: - IBAction Methods
     @IBAction private func sendButtonTapped(_ sender: Any) {
         if socketManager.isSocketConnected {
@@ -268,7 +294,7 @@ class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "h:mm a"
         let currentTimeString = dateFormatter.string(from: currentDate)
-        let chatMessage = ChatMessage(message: "", time: currentTimeString, senderId: accessToken, messageType: .image, image: image)
+        let chatMessage = ChatMessage(message: "", time: currentTimeString, senderId: "", messageType: .image, image: image)
         chatMessages.append(chatMessage)
         print(image)
     if let imageUrl = imageUrl {
