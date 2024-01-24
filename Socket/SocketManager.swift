@@ -7,7 +7,7 @@ protocol SocketIOManagerDelegate: AnyObject {
     func addMessage(_ message: String, senderID: Int, receiverID: Int,time: String, mediaLink : String)
     func handleTypingEvent()
     func handleTypingDoneEvent()
-    func addImages(_ imges:String)
+    func addImages(_ imges:String, senderID: Int)
 }
 class SocketIOManager: NSObject {
     static let sharedInstance = SocketIOManager()
@@ -84,7 +84,7 @@ class SocketIOManager: NSObject {
             if let decryptedMessage = DecryptionHandler.decryptionAESModeECB(messageData: encryptedMessage, key: "\(key)-00000") {
                 print("Received private message from \(avatar): \(time)")
                 delegate?.addMessage(decryptedMessage, senderID: senderID, receiverID: receiverID, time: time, mediaLink:mediaLink)
-                delegate?.addImages(mediaLink)
+                delegate?.addImages(mediaLink, senderID: senderID)
 //                delegate?.addMessage("\(username): " + decryptedMessage, senderID: senderID, receiverID: receiverID, time: time)
             } else {
                 print("Failed to decrypt message from \(username)")

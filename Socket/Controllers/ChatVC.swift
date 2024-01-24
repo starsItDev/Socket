@@ -26,8 +26,8 @@ class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
         tableView.delegate = self
         socketManager.delegate = self
         messageTextField.delegate = self
-//        typingBubbleView = TypingBubbleView(frame: CGRect(x: 20, y:  tableView.frame.maxY + 0, width: 70, height: 32))
-                typingBubbleView = TypingBubbleView(frame: CGRect(x: 20, y: 565, width: 70, height: 32))
+        typingBubbleView = TypingBubbleView(frame: CGRect(x: 20, y:  tableView.frame.maxY + 0, width: 70, height: 32))
+//                typingBubbleView = TypingBubbleView(frame: CGRect(x: 20, y: 565, width: 70, height: 32))
         view.addSubview(typingBubbleView)
         self.typingBubbleView.stopAnimating()
         userNameLbl.text = messageSenderName
@@ -106,7 +106,7 @@ class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
         let toID = sendMessagetoID
         let fromID = accessToken
         let username = userName
-        let message = "Test"
+        let message = " "
         let color = "#056bba"
         let isSticker = false
         let messageReplyID = ""
@@ -184,11 +184,11 @@ class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
             return nil
         }
     }
-    func addImages(_ images: String) {
+    func addImages(_ images: String , senderID: Int) {
         print(images)
         loadImage(from: images) { (image) in
             if let image = image {
-                let chatMessage = ChatMessage(message: "", time: "", senderId: "", messageType: .image, image: image)
+                let chatMessage = ChatMessage(message: "", time: "", senderId: "\(senderID)", messageType: .image, image: image)
                 self.chatMessages.append(chatMessage)
 
                 DispatchQueue.main.async {
@@ -204,7 +204,7 @@ class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
         print(time)
         if let formattedTime = formatHTMLTime(htmlTime: time) {
             print("Formatted Time: \(formattedTime)")
-            let chatMessage = ChatMessage(message: message, time: formattedTime, senderId: "\(senderID)")
+            let chatMessage = ChatMessage(message: message, time: formattedTime, senderId: "\(senderID)" , messageType: .text)
             chatMessages.append(chatMessage)
         } else {
             print("Error formatting time")
@@ -308,49 +308,63 @@ class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
     }
 }
 // MARK: - Extension Table View
-extension ChatVC: UITableViewDataSource,UITableViewDelegate {
+extension ChatVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return chatMessages.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let chatMessage = chatMessages[indexPath.row]
         var cell: UITableViewCell
-        if chatMessage.senderId == sendMessagetoID {
-            let senderCell = tableView.dequeueReusableCell(withIdentifier: "MessageCell", for: indexPath) as! MessageCell
-            senderCell.messageLabel.text = chatMessage.message
-            senderCell.timeLabel.text = chatMessage.time
-            senderCell.messageLabel.numberOfLines = 0
-            senderCell.layer.borderWidth = 2
-            senderCell.layer.cornerRadius = 22
-            senderCell.layer.masksToBounds = true
-            senderCell.layer.borderColor = UIColor.white.cgColor
-            senderCell.messageLabel.textColor = UIColor.white
-            senderCell.timeLabel.textColor = UIColor.white
-            senderCell.messageLabel.textAlignment = .left
-            cell = senderCell
-        }else if chatMessage.messageType == .image {
+        if chatMessage.messageType == .text {
+            if chatMessage.senderId == sendMessagetoID {
+                let senderCell = tableView.dequeueReusableCell(withIdentifier: "MessageCell", for: indexPath) as! MessageCell
+                senderCell.messageLabel.text = chatMessage.message
+                senderCell.timeLabel.text = chatMessage.time
+                senderCell.messageLabel.numberOfLines = 0
+                senderCell.layer.borderWidth = 2
+                senderCell.layer.cornerRadius = 22
+                senderCell.layer.masksToBounds = true
+                senderCell.layer.borderColor = UIColor.white.cgColor
+                senderCell.messageLabel.textColor = UIColor.white
+                senderCell.timeLabel.textColor = UIColor.white
+                senderCell.messageLabel.textAlignment = .left
+                cell = senderCell
+            } else {
+                let otherCell = tableView.dequeueReusableCell(withIdentifier: "MessageCell2", for: indexPath) as! MessageCell2
+                otherCell.massageLabel2.text = chatMessage.message
+                otherCell.timeLabel2.text = chatMessage.time
+                otherCell.layer.borderWidth = 4
+                otherCell.layer.cornerRadius = 22
+                otherCell.layer.masksToBounds = true
+                otherCell.layer.borderColor = UIColor.white.cgColor
+                otherCell.massageLabel2.textColor = UIColor.black
+                otherCell.massageLabel2.textAlignment = .right
+                otherCell.massageLabel2.numberOfLines = 0
+                cell = otherCell
+            }
+        } else if chatMessage.messageType == .image {
             let imageCell = tableView.dequeueReusableCell(withIdentifier: "ImageCellTV", for: indexPath) as! ImageCellTV
             imageCell.imgView.image = chatMessage.image
             imageCell.imageBtnTap.addTarget(self, action: #selector(imgBtnTapped(sender:)), for: .touchUpInside)
-            // Set the tag to the index path row
             imageCell.imageBtnTap.tag = indexPath.row
             imageCell.layer.borderWidth = 4
             imageCell.layer.masksToBounds = true
             imageCell.layer.borderColor = UIColor.white.cgColor
+            if chatMessage.senderId == sendMessagetoID {
+                print("left side")
+                imageCell.viewUIView.backgroundColor = #colorLiteral(red: 0.9926432967, green: 0.5738044381, blue: 0.2418368161, alpha: 1)
+                imageCell.leadingConstraint.constant = 20
+                imageCell.trailingConstraint.constant = 90
+            } else {
+                imageCell.viewUIView.backgroundColor = #colorLiteral(red: 0.8979771733, green: 0.8976691365, blue: 0.9184418321, alpha: 1)
+                imageCell.leadingConstraint.constant = 90
+                imageCell.trailingConstraint.constant = 20
+                print("Right side")
+            }
             cell = imageCell
-        }
-        else {
-            let otherCell = tableView.dequeueReusableCell(withIdentifier: "MessageCell2", for: indexPath) as! MessageCell2
-            otherCell.massageLabel2.text = chatMessage.message
-            otherCell.timeLabel2.text = chatMessage.time
-            otherCell.layer.borderWidth = 4
-            otherCell.layer.cornerRadius = 22
-            otherCell.layer.masksToBounds = true
-            otherCell.layer.borderColor = UIColor.white.cgColor
-            otherCell.massageLabel2.textColor = UIColor.black
-            otherCell.massageLabel2.textAlignment = .right
-            otherCell.massageLabel2.numberOfLines = 0
-            return otherCell
+        } else {
+            // Handle other message types if needed
+            cell = UITableViewCell()
         }
         return cell
     }

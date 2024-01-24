@@ -13,6 +13,11 @@ class ImageCellTV: UITableViewCell {
     
     @IBOutlet weak var imageBtnTap: UIButton!
     
+    @IBOutlet weak var viewUIView: UIView!
+    
+    @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var trailingConstraint: NSLayoutConstraint!
     
     override func awakeFromNib() {
         super.awakeFromNib()
