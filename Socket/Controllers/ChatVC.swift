@@ -106,7 +106,7 @@ class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
         let toID = sendMessagetoID
         let fromID = accessToken
         let username = userName
-        let message = " "
+        let message = ""
         let color = "#056bba"
         let isSticker = false
         let messageReplyID = ""
@@ -383,9 +383,16 @@ extension ChatVC: UIImagePickerControllerDelegate, UINavigationControllerDelegat
     }
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         if let pickedImage = info[.originalImage] as? UIImage {
-            let imageUrl = info[.imageURL] as? URL
-            // Assuming you have a function to send images
-            sendImageFunction(image: pickedImage, imageUrl: imageUrl)
+            if let imageUrl = info[.imageURL] as? URL {
+                // Image picked from the gallery
+                sendImageFunction(image: pickedImage, imageUrl: imageUrl)
+            } else {
+                // Image picked from the camera
+                if let imageData = pickedImage.jpegData(compressionQuality: 1.0) {
+                    let cameraImageUrl = saveImageLocally(imageData: imageData)
+                    sendImageFunction(image: pickedImage, imageUrl: cameraImageUrl)
+                }
+            }
             sendMediaMessageAPI()
         }
         picker.dismiss(animated: true, completion: nil)
