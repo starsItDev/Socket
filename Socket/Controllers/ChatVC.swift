@@ -106,7 +106,7 @@ class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
         let toID = sendMessagetoID
         let fromID = accessToken
         let username = userName
-        let message = ""
+        let message = " "
         let color = "#056bba"
         let isSticker = false
         let messageReplyID = ""
@@ -353,12 +353,12 @@ extension ChatVC: UITableViewDataSource, UITableViewDelegate {
             if chatMessage.senderId == sendMessagetoID {
                 print("left side")
                 imageCell.viewUIView.backgroundColor = #colorLiteral(red: 0.9926432967, green: 0.5738044381, blue: 0.2418368161, alpha: 1)
-                imageCell.leadingConstraint.constant = 20
-                imageCell.trailingConstraint.constant = 90
+                imageCell.leadingConstraint.constant = 42
+                imageCell.trailingConstraint.constant = 110
             } else {
                 imageCell.viewUIView.backgroundColor = #colorLiteral(red: 0.8979771733, green: 0.8976691365, blue: 0.9184418321, alpha: 1)
-                imageCell.leadingConstraint.constant = 90
-                imageCell.trailingConstraint.constant = 20
+                imageCell.leadingConstraint.constant = 80
+                imageCell.trailingConstraint.constant = 5
                 print("Right side")
             }
             cell = imageCell

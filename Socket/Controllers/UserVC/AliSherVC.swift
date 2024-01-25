@@ -31,8 +31,8 @@ class AliSherVC: UIViewController {
         if let RaoCV = storyboard?.instantiateViewController(withIdentifier: "ChatVC") as? ChatVC {
             RaoCV.accessToken = "4041afa70851c6a3bdbe81dc032c3105d62c57a80e544de7cb69ec02a8c0aa7c218ccfc172444021bc05ca60f2f0d67d0525f41d1d8f8717"
             RaoCV.userName = "alisher"
-            RaoCV.sendMessagetoID = "31173"
-            RaoCV.messageSenderName = "Usman"
+            RaoCV.sendMessagetoID = "31188"
+            RaoCV.messageSenderName = "SomeOne"
             navigationController?.pushViewController(RaoCV, animated: true)
         }
     }
