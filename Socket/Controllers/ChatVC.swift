@@ -26,13 +26,14 @@ class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
         tableView.delegate = self
         socketManager.delegate = self
         messageTextField.delegate = self
-        typingBubbleView = TypingBubbleView(frame: CGRect(x: 20, y:  tableView.frame.maxY + 0, width: 70, height: 32))
-//                typingBubbleView = TypingBubbleView(frame: CGRect(x: 20, y: 565, width: 70, height: 32))
-        view.addSubview(typingBubbleView)
-        self.typingBubbleView.stopAnimating()
         userNameLbl.text = messageSenderName
         addTapGestureToDismissKeyboard()
         socketManager.connectSocket()
+        joinSocket()
+        setupTypingBubbleView()
+    }
+    // MARK: - SocketIOManagerOrAPI Func
+    func joinSocket() {
         let recipientID = ""
         let userID = accessToken
         let messageID = ""
@@ -138,6 +139,12 @@ class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
         }
     }
     // MARK: - Custom Methods
+    func setupTypingBubbleView() {
+        typingBubbleView = TypingBubbleView(frame: CGRect(x: 20, y: tableView.frame.maxY, width: 70, height: 32))
+        // typingBubbleView = TypingBubbleView(frame: CGRect(x: 20, y: 565, width: 70, height: 32))
+        view.addSubview(typingBubbleView)
+        typingBubbleView.stopAnimating()
+    }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         socketManager.sendTypingEvent(recipientID: sendMessagetoID, userID: accessToken)
         return true
@@ -163,6 +170,24 @@ class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
     func handleTypingDoneEvent() {
         self.typingBubbleView.stopAnimating()
         self.typingLbl.text = "Online"
+    }
+    // MARK: - SocketIOManagerDelegate
+    func addMessage(_ message: String, senderID: Int, receiverID: Int, time: String, mediaLink: String) {
+        print(senderID)
+        print(time)
+        if let formattedTime = formatHTMLTime(htmlTime: time) {
+            print("Formatted Time: \(formattedTime)")
+            let chatMessage = ChatMessage(message: message, time: formattedTime, senderId: "\(senderID)" , messageType: .text)
+            chatMessages.append(chatMessage)
+        } else {
+            print("Error formatting time")
+        }
+        
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+            let indexPath = IndexPath(row: self.chatMessages.count - 1, section: 0)
+            self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        }
     }
     func formatHTMLTime(htmlTime: String) -> String? {
         // Extract the time string from the HTML
@@ -199,23 +224,6 @@ class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
             }
         }
     }
-    func addMessage(_ message: String, senderID: Int, receiverID: Int, time: String, mediaLink: String) {
-        print(senderID)
-        print(time)
-        if let formattedTime = formatHTMLTime(htmlTime: time) {
-            print("Formatted Time: \(formattedTime)")
-            let chatMessage = ChatMessage(message: message, time: formattedTime, senderId: "\(senderID)" , messageType: .text)
-            chatMessages.append(chatMessage)
-        } else {
-            print("Error formatting time")
-        }
-        
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-            let indexPath = IndexPath(row: self.chatMessages.count - 1, section: 0)
-            self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
-        }
-    }
     func loadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
         guard let imageUrl = URL(string: urlString) else {
             completion(nil)
@@ -229,7 +237,24 @@ class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
             }
         }.resume()
     }
-
+    func sendImageFunction(image: UIImage, imageUrl: URL?){
+        self.selectedFileURL = imageUrl
+        let currentDate = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h:mm a"
+        let currentTimeString = dateFormatter.string(from: currentDate)
+        let chatMessage = ChatMessage(message: "", time: currentTimeString, senderId: "", messageType: .image, image: image)
+        chatMessages.append(chatMessage)
+        print(image)
+    if let imageUrl = imageUrl {
+               print("Image URL: \(imageUrl)")
+           } else {
+               print("Image URL is nil.")
+           }
+        tableView.reloadData()
+        let indexPath = IndexPath(row: chatMessages.count - 1, section: 0)
+        tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+    }
     // MARK: - IBAction Methods
     @IBAction private func sendButtonTapped(_ sender: Any) {
         if socketManager.isSocketConnected {
@@ -287,24 +312,6 @@ class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
             popoverController.permittedArrowDirections = .any
         }
         present(imagePickerAlert, animated: true, completion: nil)
-    }
-    func sendImageFunction(image: UIImage, imageUrl: URL?){
-        self.selectedFileURL = imageUrl
-        let currentDate = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "h:mm a"
-        let currentTimeString = dateFormatter.string(from: currentDate)
-        let chatMessage = ChatMessage(message: "", time: currentTimeString, senderId: "", messageType: .image, image: image)
-        chatMessages.append(chatMessage)
-        print(image)
-    if let imageUrl = imageUrl {
-               print("Image URL: \(imageUrl)")
-           } else {
-               print("Image URL is nil.")
-           }
-        tableView.reloadData()
-        let indexPath = IndexPath(row: chatMessages.count - 1, section: 0)
-        tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
     }
 }
 // MARK: - Extension Table View
