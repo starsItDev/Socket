@@ -23,6 +23,7 @@ import UIKit
 enum MessageType {
     case text
     case image
+    case video // Add this case for video
 }
 
 class ChatMessage {
@@ -30,13 +31,15 @@ class ChatMessage {
     var time: String
     var senderId: String
     var messageType: MessageType
-    var image: UIImage? // Add this property for image messages
+    var image: UIImage?
+    var videoURL: URL? // Add this property for video messages
 
-    init(message: String, time: String, senderId: String, messageType: MessageType = .text, image: UIImage? = nil) {
+    init(message: String, time: String, senderId: String, messageType: MessageType = .text, image: UIImage? = nil, videoURL: URL? = nil) {
         self.message = message
         self.time = time
         self.senderId = senderId
         self.messageType = messageType
         self.image = image
+        self.videoURL = videoURL
     }
 }

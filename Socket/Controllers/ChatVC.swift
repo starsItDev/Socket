@@ -5,6 +5,8 @@
 import Foundation
 import UIKit
 import Photos
+import AVKit
+import AVFoundation
 class ChatVC: UIViewController , SocketIOManagerDelegate, UITextFieldDelegate{
     // MARK: - IBOutlet Properties
     @IBOutlet private weak var messageTextField: UITextField!
@@ -369,6 +371,21 @@ extension ChatVC: UITableViewDataSource, UITableViewDelegate {
                 print("Right side")
             }
             cell = imageCell
+        }else if chatMessage.messageType == .video {
+            let videoCell = tableView.dequeueReusableCell(withIdentifier: "VideoCellTV", for: indexPath) as! VideoCellTV
+
+            if chatMessage.senderId == sendMessagetoID {
+                // Video sent by you
+                videoCell.leadingConstraint.constant = 80
+                videoCell.trailingConstraint.constant = 5
+                videoCell.backgroundColor = #colorLiteral(red: 0.8979771733, green: 0.8976691365, blue: 0.9184418321, alpha: 1)
+            } else {
+                // Video sent by the other user
+                videoCell.leadingConstraint.constant = 42
+                videoCell.trailingConstraint.constant = 110
+                videoCell.backgroundColor = #colorLiteral(red: 0.9926432967, green: 0.5738044381, blue: 0.2418368161, alpha: 1)
+            }
+            cell = videoCell
         } else {
             // Handle other message types if needed
             cell = UITableViewCell()
@@ -383,6 +400,7 @@ extension ChatVC: UIImagePickerControllerDelegate, UINavigationControllerDelegat
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = sourceType
+//        imagePicker.mediaTypes = ["public.image", "public.movie"]
         if sourceType == .camera {
             imagePicker.cameraCaptureMode = .photo
         }
@@ -393,14 +411,15 @@ extension ChatVC: UIImagePickerControllerDelegate, UINavigationControllerDelegat
             if let imageUrl = info[.imageURL] as? URL {
                 // Image picked from the gallery
                 sendImageFunction(image: pickedImage, imageUrl: imageUrl)
+                sendMediaMessageAPI()
             } else {
                 // Image picked from the camera
                 if let imageData = pickedImage.jpegData(compressionQuality: 1.0) {
                     let cameraImageUrl = saveImageLocally(imageData: imageData)
                     sendImageFunction(image: pickedImage, imageUrl: cameraImageUrl)
+                    sendMediaMessageAPI()
                 }
             }
-            sendMediaMessageAPI()
         }
         picker.dismiss(animated: true, completion: nil)
     }

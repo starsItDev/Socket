@@ -31,6 +31,7 @@
 		76B7E4CF2B46BA4000E27656 /* DecryptionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B7E4CE2B46BA4000E27656 /* DecryptionHandler.swift */; };
 		76C105972B47DAF5006D9923 /* MessageKitVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C105962B47DAF5006D9923 /* MessageKitVC.swift */; };
 		76C85EE12B3B10A6007B68E5 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C85EE02B3B10A6007B68E5 /* TextField.swift */; };
+		76EC4B3B2B627FE30033B7BB /* VideoCellTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EC4B3A2B627FE30033B7BB /* VideoCellTV.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +56,11 @@
 		76B7E4CE2B46BA4000E27656 /* DecryptionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptionHandler.swift; sourceTree = "<group>"; };
 		76C105962B47DAF5006D9923 /* MessageKitVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageKitVC.swift; sourceTree = "<group>"; };
 		76C85EE02B3B10A6007B68E5 /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		76EC4B3A2B627FE30033B7BB /* VideoCellTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCellTV.swift; sourceTree = "<group>"; };
+		76EC4B3D2B6282120033B7BB /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
+		76EC4B3E2B6282120033B7BB /* AVFAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFAudio.framework; path = System/Library/Frameworks/AVFAudio.framework; sourceTree = SDKROOT; };
+		76EC4B3F2B6282120033B7BB /* AVRouting.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVRouting.framework; path = System/Library/Frameworks/AVRouting.framework; sourceTree = SDKROOT; };
+		76EC4B402B6282120033B7BB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +84,7 @@
 			children = (
 				74C897F72B35F5D800FCA29B /* Socket */,
 				74C897F62B35F5D800FCA29B /* Products */,
+				76EC4B3C2B6282120033B7BB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -160,6 +167,7 @@
 				74C898112B35FAA500FCA29B /* MessageCell.swift */,
 				76AAA5A02B44264300E8893B /* MessageCell2.swift */,
 				769D317B2B566BB5007AEC2F /* ImageCellTV.swift */,
+				76EC4B3A2B627FE30033B7BB /* VideoCellTV.swift */,
 			);
 			path = TableViewCell;
 			sourceTree = "<group>";
@@ -170,6 +178,17 @@
 				76C85EE02B3B10A6007B68E5 /* TextField.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		76EC4B3C2B6282120033B7BB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				76EC4B3E2B6282120033B7BB /* AVFAudio.framework */,
+				76EC4B402B6282120033B7BB /* AVFoundation.framework */,
+				76EC4B3D2B6282120033B7BB /* AVKit.framework */,
+				76EC4B3F2B6282120033B7BB /* AVRouting.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -270,6 +289,7 @@
 				74C897FD2B35F5D800FCA29B /* UserVC.swift in Sources */,
 				74C897F92B35F5D800FCA29B /* AppDelegate.swift in Sources */,
 				76B7E4CF2B46BA4000E27656 /* DecryptionHandler.swift in Sources */,
+				76EC4B3B2B627FE30033B7BB /* VideoCellTV.swift in Sources */,
 				769D317C2B566BB5007AEC2F /* ImageCellTV.swift in Sources */,
 				74C897FB2B35F5D800FCA29B /* SceneDelegate.swift in Sources */,
 				769AA46D2B57E7E7008A540C /* ImageHelper.swift in Sources */,

@@ -394,7 +394,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="l2f-AL-y6x">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="l2f-AL-y6x">
                                 <rect key="frame" x="20" y="115" width="353" height="656.33333333333337"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -599,6 +599,77 @@
                                             <outlet property="leadingConstraint" destination="IKA-dY-80f" id="vr9-dC-VmK"/>
                                             <outlet property="trailingConstraint" destination="sRE-aZ-iGL" id="5Y5-fp-ig9"/>
                                             <outlet property="viewUIView" destination="1iJ-Jt-SCl" id="Pho-Qf-mx4"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="MessageCell" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VideoCellTV" rowHeight="172" id="aOu-TO-dq5" customClass="VideoCellTV" customModule="Socket" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="318" width="353" height="172"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aOu-TO-dq5" id="Wb6-ii-k9E">
+                                            <rect key="frame" x="0.0" y="0.0" width="353" height="172"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="92c-B9-fdZ">
+                                                    <rect key="frame" x="42" y="0.0" width="176" height="172"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="h41-1D-dRT">
+                                                            <rect key="frame" x="0.0" y="0.0" width="176" height="172"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="200" id="V98-c2-hLk"/>
+                                                            </constraints>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                    <real key="value" value="30"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </imageView>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a1f-Px-bv1">
+                                                            <rect key="frame" x="0.0" y="0.0" width="176" height="172"/>
+                                                            <state key="normal" title="Button"/>
+                                                            <buttonConfiguration key="configuration" style="plain" title=" "/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                    <real key="value" value="30"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </button>
+                                                    </subviews>
+                                                    <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="h41-1D-dRT" secondAttribute="trailing" id="3IP-7A-Wh4"/>
+                                                        <constraint firstItem="a1f-Px-bv1" firstAttribute="top" secondItem="92c-B9-fdZ" secondAttribute="top" id="3Rk-vu-8nO"/>
+                                                        <constraint firstAttribute="bottom" secondItem="a1f-Px-bv1" secondAttribute="bottom" id="JhJ-Dv-q14"/>
+                                                        <constraint firstAttribute="trailing" secondItem="a1f-Px-bv1" secondAttribute="trailing" id="OZE-Cb-AZS"/>
+                                                        <constraint firstItem="a1f-Px-bv1" firstAttribute="leading" secondItem="92c-B9-fdZ" secondAttribute="leading" id="QpR-2Z-vEy"/>
+                                                        <constraint firstAttribute="bottom" secondItem="h41-1D-dRT" secondAttribute="bottom" id="jkR-Xn-MEB"/>
+                                                        <constraint firstItem="h41-1D-dRT" firstAttribute="top" secondItem="92c-B9-fdZ" secondAttribute="top" id="mo2-dL-38T"/>
+                                                        <constraint firstItem="h41-1D-dRT" firstAttribute="leading" secondItem="92c-B9-fdZ" secondAttribute="leading" id="qXg-Z2-D8M"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                            <real key="value" value="30"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="92c-B9-fdZ" firstAttribute="leading" secondItem="Wb6-ii-k9E" secondAttribute="leading" constant="42" id="KOK-0a-dt2"/>
+                                                <constraint firstItem="92c-B9-fdZ" firstAttribute="top" secondItem="Wb6-ii-k9E" secondAttribute="top" id="PMy-HU-6WP"/>
+                                                <constraint firstAttribute="bottom" secondItem="92c-B9-fdZ" secondAttribute="bottom" id="fNp-K7-ddN"/>
+                                                <constraint firstAttribute="trailing" secondItem="92c-B9-fdZ" secondAttribute="trailing" constant="135" id="gxh-WG-Ylo"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                    <real key="value" value="30"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="imageVideoBtnTap" destination="a1f-Px-bv1" id="uM2-Lp-BbZ"/>
+                                            <outlet property="imgVideoView" destination="h41-1D-dRT" id="9bP-B6-kGs"/>
+                                            <outlet property="leadingConstraint" destination="KOK-0a-dt2" id="Oim-b8-7S8"/>
+                                            <outlet property="trailingConstraint" destination="gxh-WG-Ylo" id="3Ur-ic-8P6"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
